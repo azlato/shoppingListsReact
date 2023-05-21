@@ -1,11 +1,12 @@
 import { useContext, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ShopingListsContext, IList } from '../../context/ShopingListsContext';
 import ShoppingListForm from '../../components/shoppingListForm/ShoppingListForm';
 
 function EditList() {
   const { id } = useParams();
   const { items, updateList } = useContext(ShopingListsContext);
+  const navigate = useNavigate();
 
   const listItem = useMemo(() => (
     items.find((item) => item.id === id)
@@ -13,7 +14,9 @@ function EditList() {
 
   const onSubmit = (values: Partial<IList>) => {
     if (id && values.name) {
-      updateList({ ...values, id } as IList);
+      updateList({ ...values, id } as IList).then(() => {
+        navigate('/');
+      });
     }
   };
 

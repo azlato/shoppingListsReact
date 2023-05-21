@@ -31,10 +31,12 @@ router.get('/:id', ctx => {
 router.put('/:id', ctx => {
     const id = ctx.params.id;
     const list = getList(id);
+    const data = ctx.request.body;
 
     if (!list) {
         ctx.response.status = 404;
     } else {
+        putList(id, data);
         ctx.body = list;
     }
 });

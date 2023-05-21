@@ -27,7 +27,9 @@ const putList = (id, data) => {
     };
 
     // TODO: should check format of data
-    list.set(id, data);
+    lists.set(id, data);
+
+    return data;
 };
 
 module.exports = {

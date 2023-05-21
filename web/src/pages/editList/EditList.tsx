@@ -2,6 +2,7 @@ import { useContext, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ShopingListsContext, IList } from '../../context/ShopingListsContext';
 import ShoppingListForm from '../../components/shoppingListForm/ShoppingListForm';
+import BreadCrumbs from '../../components/breadcrumbs/Breadcrumbs';
 
 function EditList() {
   const { id } = useParams();
@@ -22,6 +23,8 @@ function EditList() {
 
   return (
     <div>
+      <BreadCrumbs title={listItem ? `Úprava "${listItem.name}"` : 'Úprava'} />
+
       <h2>Úprava seznamu</h2>
       {listItem
         ? <ShoppingListForm isEditMode initialValues={listItem} onSubmit={onSubmit} />

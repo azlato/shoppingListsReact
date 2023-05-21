@@ -10,7 +10,11 @@ function ShopingLists() {
       <h2>Nákupní seznamy</h2>
       <Link to="/lists/create">Vytvořit</Link>
       {items.map((item) => (
-        <div key={item.id}>{item.name}</div>
+        <div key={item.id}>
+          {item.name}
+          {' '}
+          <Link to={`/lists/edit/${item.id}`}>Editovat</Link>
+        </div>
       ))}
     </div>
   );

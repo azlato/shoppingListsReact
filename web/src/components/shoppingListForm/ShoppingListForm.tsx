@@ -3,7 +3,7 @@ import { IList } from '../../context/ShopingListsContext';
 
 interface IProps {
   isEditMode?: boolean;
-  initialValues?: { [name: string]: string };
+  initialValues?: Partial<IList>;
   onSubmit(values: Partial<IList>): void;
 }
 
@@ -12,7 +12,7 @@ function ShoppingListForm({ isEditMode, initialValues, onSubmit }: IProps) {
     initialValues: initialValues || {
       name: '',
     },
-    onSubmit: (values: { [name: string]: string }, { resetForm }) => {
+    onSubmit: (values: Partial<IList>, { resetForm }) => {
       onSubmit(values);
 
       resetForm();

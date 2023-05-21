@@ -9,20 +9,40 @@ export interface IList {
 
 interface IShopingListsContext {
   items: IList[];
-  createList(data: Partial<IList>): void;
+  createList(data: Partial<IList>): Promise<unknown>;
+  updateList(data: IList): Promise<unknown>;
+  deleteList(id: Pick<IList, 'id'>): Promise<unknown>;
 }
 
 export const ShopingListsContext = createContext<IShopingListsContext>({
   items: [],
-  createList: () => {},
+  createList: () => Promise.resolve(),
+  updateList: () => Promise.resolve(),
+  deleteList: () => Promise.resolve(),
 });
 
 const API_URL = `${import.meta.env.VITE_API_ENDPOINT}/lists`;
 
-const postList = async (data: Partial<IList>): Promise<string> => {
+const postListHandler = async (data: Partial<IList>): Promise<string> => {
   const response = await apiClient(API_URL, 'POST', data);
   if (!response.ok) {
-    throw new Error(`Failed to insert new list. Status ${response.statusText}: ${response.body}`);
+    throw new Error(`Failed to insert new list. Status ${response.status} ${response.statusText}`);
+  }
+  return response.text();
+};
+
+const putListHandler = async (data: IList): Promise<string> => {
+  const response = await apiClient(`${API_URL}/${data.id}`, 'PUT', data);
+  if (!response.ok) {
+    throw new Error(`Failed to update list with id '${data.id}'. Status ${response.status} ${response.statusText}`);
+  }
+  return response.text();
+};
+
+const deleteListHandler = async (data: IList): Promise<string> => {
+  const response = await apiClient(API_URL, 'DELETE', data);
+  if (!response.ok) {
+    throw new Error(`Failed to delete list with id '${data.id}'. Status ${response.status} ${response.statusText}`);
   }
   return response.text();
 };
@@ -35,17 +55,26 @@ export function ShopingListsContextProvider({ children }: { children: React.Reac
   );
 
   // Mutations
-  const { mutate: createList } = useMutation(postList, {
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries('lists');
-    },
+  const onSuccess = () => {
+    // Invalidate and refetch
+    queryClient.invalidateQueries('lists');
+  };
+  const { mutateAsync: createList } = useMutation(postListHandler, {
+    onSuccess,
+  });
+  const { mutateAsync: updateList } = useMutation(putListHandler, {
+    onSuccess,
+  });
+  const { mutateAsync: deleteList } = useMutation(deleteListHandler, {
+    onSuccess,
   });
 
   const value = useMemo(() => ({
     items: data || [],
     createList,
-  }), [data, createList]);
+    updateList,
+    deleteList,
+  }), [data, createList, updateList, deleteList]);
 
   return <ShopingListsContext.Provider value={value}>{children}</ShopingListsContext.Provider>;
 }

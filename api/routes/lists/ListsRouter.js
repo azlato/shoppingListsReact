@@ -1,5 +1,5 @@
 const Router = require('@koa/router');
-const { createList, getLists, getList, putList } = require('./ListApi');
+const { createList, getLists, getList, putList } = require('./ListsApi');
 
 const router = new Router({
     prefix: '/lists',

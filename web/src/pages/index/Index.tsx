@@ -1,6 +1,8 @@
+import ShopingLists from '../../components/shoppingLists/ShoppingLists';
+
 function IndexPage() {
   return (
-    'Hello'
+    <ShopingLists />
   );
 }
 

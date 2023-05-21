@@ -2,19 +2,19 @@ import React, { createContext, useMemo } from 'react';
 import { useQuery, useQueryClient, useMutation } from 'react-query';
 import apiClient from '../utils/apiClient';
 
-interface IList {
+export interface IList {
   id: string;
   name: string;
 }
 
 interface IShopingListsContext {
   items: IList[];
-  addList(data: Partial<IList>): void;
+  createList(data: Partial<IList>): void;
 }
 
 export const ShopingListsContext = createContext<IShopingListsContext>({
   items: [],
-  addList: () => {},
+  createList: () => {},
 });
 
 const API_URL = `${import.meta.env.VITE_API_ENDPOINT}/lists`;
@@ -35,7 +35,7 @@ export function ShopingListsContextProvider({ children }: { children: React.Reac
   );
 
   // Mutations
-  const { mutate: addList } = useMutation(postList, {
+  const { mutate: createList } = useMutation(postList, {
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries('lists');
@@ -44,8 +44,8 @@ export function ShopingListsContextProvider({ children }: { children: React.Reac
 
   const value = useMemo(() => ({
     items: data || [],
-    addList,
-  }), [data, addList]);
+    createList,
+  }), [data, createList]);
 
   return <ShopingListsContext.Provider value={value}>{children}</ShopingListsContext.Provider>;
 }

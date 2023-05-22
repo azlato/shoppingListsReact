@@ -2,6 +2,8 @@ import React, { createContext, useMemo } from 'react';
 import { useQuery, useQueryClient, useMutation } from 'react-query';
 import apiClient from '../utils/apiClient';
 
+const API_URL = `${import.meta.env.VITE_API_ENDPOINT}/lists`;
+
 export interface IList {
   id: string;
   name: string;
@@ -20,8 +22,6 @@ export const ShopingListsContext = createContext<IShopingListsContext>({
   updateList: () => Promise.resolve(),
   deleteList: () => Promise.resolve(),
 });
-
-const API_URL = `${import.meta.env.VITE_API_ENDPOINT}/lists`;
 
 const postListHandler = async (data: Partial<IList>): Promise<string> => {
   const response = await apiClient(API_URL, 'POST', data);

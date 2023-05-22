@@ -41,9 +41,19 @@ const putList = (id, values) => {
     return values;
 };
 
+const deleteList = (id) => {
+    const list = getList(id);
+    if (!list) {
+        throw new Error(`List with id '${id}' does not exist`);
+    };
+
+    lists.delete(id);
+};
+
 module.exports = {
     createList,
     getLists,
     getList,
     putList,
+    deleteList,
 };

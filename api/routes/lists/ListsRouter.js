@@ -1,5 +1,5 @@
 const Router = require('@koa/router');
-const { createList, getLists, getList, putList } = require('./ListsApi');
+const { createList, getLists, getList, putList, deleteList } = require('./ListsApi');
 
 const router = new Router({
     prefix: '/lists',
@@ -35,6 +35,22 @@ router.get('/:id', ctx => {
         ctx.response.status = 404;
     } else {
         ctx.body = list;
+    }
+});
+
+router.delete('/:id', ctx => {
+    const id = ctx.params.id;
+    if (!id) {
+        ctx.response.status = 400;
+        ctx.body = `Id is not defined`;
+    }
+
+    try {
+        deleteList(id);
+        ctx.status = 200;
+    } catch (error) {
+        ctx.status = 400;
+        ctx.body = error.message;
     }
 });
 

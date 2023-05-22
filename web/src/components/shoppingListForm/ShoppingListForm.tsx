@@ -6,10 +6,13 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 interface IProps {
   isEditMode?: boolean;
   initialValues?: Partial<IList>;
-  onSubmit(values: Partial<IList>): Promise<void>;
+  onSubmit(values: Partial<IList>): Promise<unknown>;
+  onRemove?(): Promise<unknown>;
 }
 
-function ShoppingListForm({ isEditMode, initialValues, onSubmit }: IProps) {
+function ShoppingListForm({
+  isEditMode, initialValues, onSubmit, onRemove,
+}: IProps) {
   const [submitError, setSubmitError] = useState<null | string>(null);
   const formik = useFormik({
     initialValues: initialValues || {
@@ -42,7 +45,9 @@ function ShoppingListForm({ isEditMode, initialValues, onSubmit }: IProps) {
           />
         </label>
         <div>
-          <input type="submit" value={isEditMode ? 'Upravit' : 'Vytvořit'} />
+          <button type="submit">{isEditMode ? 'Upravit' : 'Vytvořit'}</button>
+          {isEditMode && onRemove
+            && <button type="button" onClick={onRemove}>Smazat</button>}
         </div>
       </form>
     </div>

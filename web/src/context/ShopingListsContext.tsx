@@ -11,7 +11,7 @@ interface IShopingListsContext {
   items: IList[];
   createList(data: Partial<IList>): Promise<unknown>;
   updateList(data: IList): Promise<unknown>;
-  deleteList(id: Pick<IList, 'id'>): Promise<unknown>;
+  deleteList(id: string): Promise<unknown>;
 }
 
 export const ShopingListsContext = createContext<IShopingListsContext>({
@@ -43,12 +43,12 @@ const putListHandler = async (data: IList): Promise<string> => {
   return response.text();
 };
 
-const deleteListHandler = async (data: IList): Promise<string> => {
-  const response = await apiClient(API_URL, 'DELETE', data);
+const deleteListHandler = async (id: string): Promise<string> => {
+  const response = await apiClient(`${API_URL}/${id}`, 'DELETE');
   if (!response.ok) {
     const responseText = await response.text();
     throw new Error(
-      `Failed to delete list with id '${data.id}'. ${responseText}`,
+      `Failed to delete list with id '${id}'. ${responseText}`,
     );
   }
   return response.text();

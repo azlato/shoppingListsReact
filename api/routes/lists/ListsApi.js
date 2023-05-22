@@ -3,6 +3,11 @@ const uuid = require('uuid');
 const lists = new Map();
 
 const createList = (values) => {
+    const listWithName = [...lists.values()].find(item => item.name === values.name);
+    if (listWithName) {
+        throw new Error(`List with name '${values.name}' already exists`);
+    }
+
     const list = {
         id: uuid.v4(),
         name: values.name,
@@ -20,16 +25,20 @@ const getList = (id) => {
     return lists.get(id);
 };
 
-const putList = (id, data) => {
+const putList = (id, values) => {
     const list = getList(id);
     if (!list) {
-        throw new Error('Unknown list');
+        throw new Error('List does not exist');
     };
 
-    // TODO: should check format of data
-    lists.set(id, data);
+    const listWithName = [...lists.values()].find(item => item.name === values.name);
+    if (listWithName) {
+        throw new Error(`List with name '${values.name}' already exists`);
+    }
 
-    return data;
+    lists.set(id, values);
+
+    return values;
 };
 
 module.exports = {

@@ -15,10 +15,11 @@ function EditList() {
 
   const onSubmit = (values: Partial<IList>) => {
     if (id && values.name) {
-      updateList({ ...values, id } as IList).then(() => {
+      return updateList({ ...values, id } as IList).then(() => {
         navigate('/');
       });
     }
+    return Promise.reject(new Error('Unknown list'));
   };
 
   return (

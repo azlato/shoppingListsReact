@@ -26,7 +26,8 @@ const API_URL = `${import.meta.env.VITE_API_ENDPOINT}/lists`;
 const postListHandler = async (data: Partial<IList>): Promise<string> => {
   const response = await apiClient(API_URL, 'POST', data);
   if (!response.ok) {
-    throw new Error(`Failed to insert new list. Status ${response.status} ${response.statusText}`);
+    const responseText = await response.text();
+    throw new Error(`Failed to insert new list ${responseText}`);
   }
   return response.text();
 };
@@ -34,7 +35,10 @@ const postListHandler = async (data: Partial<IList>): Promise<string> => {
 const putListHandler = async (data: IList): Promise<string> => {
   const response = await apiClient(`${API_URL}/${data.id}`, 'PUT', data);
   if (!response.ok) {
-    throw new Error(`Failed to update list with id '${data.id}'. Status ${response.status} ${response.statusText}`);
+    const responseText = await response.text();
+    throw new Error(
+      `Failed to update list with id '${data.id}'. ${responseText}`,
+    );
   }
   return response.text();
 };
@@ -42,7 +46,10 @@ const putListHandler = async (data: IList): Promise<string> => {
 const deleteListHandler = async (data: IList): Promise<string> => {
   const response = await apiClient(API_URL, 'DELETE', data);
   if (!response.ok) {
-    throw new Error(`Failed to delete list with id '${data.id}'. Status ${response.status} ${response.statusText}`);
+    const responseText = await response.text();
+    throw new Error(
+      `Failed to delete list with id '${data.id}'. ${responseText}`,
+    );
   }
   return response.text();
 };

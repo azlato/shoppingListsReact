@@ -8,6 +8,7 @@ export default {
     gray400: '#aaa',
     gray500: '#888',
     gray600: '#666',
+    red: '#ee2222',
   },
   fontWeight: {
     bold: 'bold',

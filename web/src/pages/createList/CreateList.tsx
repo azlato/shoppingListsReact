@@ -8,11 +8,9 @@ function CreateList() {
   const { createList } = useContext(ShopingListsContext);
   const navigate = useNavigate();
 
-  const onSubmit = (values: Partial<IList>) => {
-    createList(values).then(() => {
-      navigate('/');
-    });
-  };
+  const onSubmit = (values: Partial<IList>) => createList(values).then(() => {
+    navigate('/');
+  });
 
   return (
     <div>

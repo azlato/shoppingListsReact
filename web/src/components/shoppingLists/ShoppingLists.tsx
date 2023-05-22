@@ -8,7 +8,8 @@ function ShopingLists() {
   return (
     <div>
       <h2>Nákupní seznamy</h2>
-      <Link to="/lists/create">Vytvořit</Link>
+      <Link to="/lists/create">Vytvořit nový seznam</Link>
+      <hr />
       {items.map((item) => (
         <div key={item.id}>
           {item.name}

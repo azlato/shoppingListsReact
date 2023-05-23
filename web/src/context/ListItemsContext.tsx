@@ -12,15 +12,15 @@ export interface IListItem {
   name: string;
 }
 
-interface IShopingListsContext {
-  items: IListItem[];
+interface IListItemsContext {
+  listItems: IListItem[];
   fetchList(id: string): Promise<unknown>;
   createListItem(data: Partial<IListItem>): Promise<unknown>;
   deleteListItem(data: { listId: string, itemId: string }): Promise<unknown>;
 }
 
-export const ShopingListsContext = createContext<IShopingListsContext>({
-  items: [],
+export const ListItemsContext = createContext<IListItemsContext>({
+  listItems: [],
   fetchList: () => Promise.resolve(),
   createListItem: () => Promise.resolve(),
   deleteListItem: () => Promise.resolve(),
@@ -77,11 +77,11 @@ export function ListItemsContextProvider({ children }: { children: React.ReactNo
   });
 
   const value = useMemo(() => ({
-    items: data,
+    listItems: data,
     fetchList,
     createListItem,
     deleteListItem,
   }), [data, fetchList, createListItem, deleteListItem]);
 
-  return <ShopingListsContext.Provider value={value}>{children}</ShopingListsContext.Provider>;
+  return <ListItemsContext.Provider value={value}>{children}</ListItemsContext.Provider>;
 }

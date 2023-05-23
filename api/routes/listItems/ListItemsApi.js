@@ -14,8 +14,8 @@ const createListItem = (listId, values) => {
         id: uuid.v4(),
         name: values.name,
     };
-
-    listIdsToItems.set(listId, listItems.append(item));
+    listItems.push(item);
+    listIdsToItems.set(listId, listItems);
     return item;
 }
 

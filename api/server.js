@@ -2,7 +2,7 @@ const Koa = require('koa');
 const cors = require('@koa/cors');
 const bodyParser = require('koa-bodyparser');
 const ListRouter = require('./routes/lists/ListsRouter');
-const ListItemsRouter = require('./routes/listItems/ListItemRouter');
+const ListItemsRouter = require('./routes/listItems/ListItemsRouter');
 
 const app = new Koa();
 

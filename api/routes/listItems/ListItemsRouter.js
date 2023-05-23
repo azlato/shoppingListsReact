@@ -1,5 +1,5 @@
 const Router = require('@koa/router');
-const { createListItem, getListItems, deleteListItem } = require('./ListsApi');
+const { createListItem, getListItems, deleteListItem } = require('./ListItemsApi');
 
 const router = new Router({
     prefix: '/listItems',
@@ -17,7 +17,7 @@ router.post('/:listId', ctx => {
     try {
         const newListItem = createListItem(listId, data);
         ctx.response.status = 201;
-        ctx.body = newList;
+        ctx.body = newListItem;
     } catch (error) {
         ctx.response.status = 409;
         ctx.body = error.message;

@@ -1,21 +1,16 @@
-import React, { useState } from 'react';
+import { useState, memo } from 'react';
 import { useFormik } from 'formik';
 import { IList } from '../../context/ShopingListsContext';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
 interface IProps {
-  isEditMode?: boolean;
-  initialValues?: Partial<IList>;
   onSubmit(values: Partial<IList>): Promise<unknown>;
-  onRemove?(): Promise<unknown>;
 }
 
-function ShoppingListForm({
-  isEditMode, initialValues, onSubmit, onRemove,
-}: IProps) {
+function ListItemsForm({onSubmit}: IProps) {
   const [submitError, setSubmitError] = useState<null | string>(null);
   const formik = useFormik({
-    initialValues: initialValues || {
+    initialValues: {
       name: '',
     },
     onSubmit: (values: Partial<IList>, { resetForm }) => {
@@ -44,16 +39,12 @@ function ShoppingListForm({
             onChange={formik.handleChange}
           />
         </label>
-        <br />
-        <br />
         <div>
-          <button type="submit">{isEditMode ? 'Upravit' : 'Vytvořit'}</button>
-          {isEditMode && onRemove
-            && <button type="button" onClick={onRemove}>Smazat</button>}
+          <button type="submit">Přidat</button>
         </div>
       </form>
     </div>
   );
 }
 
-export default React.memo(ShoppingListForm);
+export default memo(ListItemsForm);

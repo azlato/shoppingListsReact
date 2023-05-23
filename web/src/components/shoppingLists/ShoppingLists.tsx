@@ -12,7 +12,9 @@ function ShopingLists() {
       <hr />
       {items.map((item) => (
         <div key={item.id}>
-          {item.name}
+          <Link to={`/lists/${item.id}`}>
+            {item.name}
+          </Link>
           {' '}
           <Link to={`/lists/edit/${item.id}`}>Editovat</Link>
         </div>

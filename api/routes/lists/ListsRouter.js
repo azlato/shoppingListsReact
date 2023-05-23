@@ -65,6 +65,7 @@ router.put('/:id', ctx => {
     if (id !== data.id) {
         ctx.response.status = 400;
         ctx.body = `Data id '${data.id}' and parameter id '${id}' does not match`;
+        return;
     }
 
     try {

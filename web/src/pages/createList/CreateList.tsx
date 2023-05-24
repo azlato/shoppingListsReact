@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShopingListsContext, IList } from '../../context/ShopingListsContext';
+import { ShopingListsApiContext, IList } from '../../context/ShopingListsContext';
 import ShoppingListForm from '../../components/shoppingListForm/ShoppingListForm';
 import BreadCrumbs from '../../components/breadcrumbs/Breadcrumbs';
 
 function CreateList() {
-  const { createList } = useContext(ShopingListsContext);
+  const { createList } = useContext(ShopingListsApiContext);
   const navigate = useNavigate();
 
   const onSubmit = (values: Partial<IList>) => createList(values).then(() => {

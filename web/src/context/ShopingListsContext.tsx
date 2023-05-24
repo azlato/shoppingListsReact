@@ -9,15 +9,21 @@ export interface IList {
   name: string;
 }
 
-interface IShopingListsContext {
+interface IShopingListsDataContext {
   items: IList[];
+}
+
+export const ShopingListsDataContext = createContext<IShopingListsDataContext>({
+  items: [],
+});
+
+interface IShopingListsApiContext {
   createList(data: Partial<IList>): Promise<unknown>;
   updateList(data: IList): Promise<unknown>;
   deleteList(id: string): Promise<unknown>;
 }
 
-export const ShopingListsContext = createContext<IShopingListsContext>({
-  items: [],
+export const ShopingListsApiContext = createContext<IShopingListsApiContext>({
   createList: () => Promise.resolve(),
   updateList: () => Promise.resolve(),
   deleteList: () => Promise.resolve(),
@@ -61,6 +67,10 @@ export function ShopingListsContextProvider({ children }: { children: React.Reac
     () => apiClient(API_URL).then((res) => res.json()),
   );
 
+  const dataValue = useMemo(() => ({
+    items: data || [],
+  }), [data]);
+
   // Mutations
   const onSuccess = () => {
     // Invalidate and refetch
@@ -75,13 +85,17 @@ export function ShopingListsContextProvider({ children }: { children: React.Reac
   const { mutateAsync: deleteList } = useMutation(deleteListHandler, {
     onSuccess,
   });
-
-  const value = useMemo(() => ({
-    items: data || [],
+  const apiValue = useMemo(() => ({
     createList,
     updateList,
     deleteList,
-  }), [data, createList, updateList, deleteList]);
+  }), [createList, updateList, deleteList]);
 
-  return <ShopingListsContext.Provider value={value}>{children}</ShopingListsContext.Provider>;
+  return (
+    <ShopingListsDataContext.Provider value={dataValue}>
+      <ShopingListsApiContext.Provider value={apiValue}>
+        {children}
+      </ShopingListsApiContext.Provider>
+    </ShopingListsDataContext.Provider>
+  );
 }

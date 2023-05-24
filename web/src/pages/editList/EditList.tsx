@@ -1,12 +1,13 @@
 import { useContext, useMemo, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ShopingListsContext, IList } from '../../context/ShopingListsContext';
+import { ShopingListsDataContext, ShopingListsApiContext, IList } from '../../context/ShopingListsContext';
 import ShoppingListForm from '../../components/shoppingListForm/ShoppingListForm';
 import BreadCrumbs from '../../components/breadcrumbs/Breadcrumbs';
 
 function EditList() {
   const { id } = useParams();
-  const { items, updateList, deleteList } = useContext(ShopingListsContext);
+  const { items } = useContext(ShopingListsDataContext);
+  const { updateList, deleteList } = useContext(ShopingListsApiContext);
   const navigate = useNavigate();
 
   const listItem = useMemo(() => (

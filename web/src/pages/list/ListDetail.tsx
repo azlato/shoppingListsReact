@@ -2,16 +2,17 @@ import {
   useContext, useMemo, useCallback, useEffect,
 } from 'react';
 import { useParams } from 'react-router-dom';
-import { ShopingListsContext, IList } from '../../context/ShopingListsContext';
-import { ListItemsContext, IListItem } from '../../context/ListItemsContext';
+import { ShopingListsDataContext, IList } from '../../context/ShopingListsContext';
+import { ListItemsDataContext, ListItemsApiContext, IListItem } from '../../context/ListItemsContext';
 import ListItemsForm from '../../components/listItemsForm/ListItemsForm';
 import BreadCrumbs from '../../components/breadcrumbs/Breadcrumbs';
 import ListItems from '../../components/listItems/ListItems';
 
 function ListDetail() {
   const { id } = useParams();
-  const { items } = useContext(ShopingListsContext);
-  const { createListItem, listItems, fetchList } = useContext(ListItemsContext);
+  const { items } = useContext(ShopingListsDataContext);
+  const { fetchList, listItems } = useContext(ListItemsDataContext);
+  const { createListItem } = useContext(ListItemsApiContext);
 
   useEffect(() => {
     if (id) {

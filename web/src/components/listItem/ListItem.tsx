@@ -1,6 +1,6 @@
 import { memo, useContext } from 'react';
 import { styled } from 'styled-components';
-import { IListItem, ListItemsContext } from '../../context/ListItemsContext';
+import { IListItem, ListItemsApiContext, ListItemsDataContext } from '../../context/ListItemsContext';
 import { PureButton } from '../button/Button';
 
 const Container = styled.div`
@@ -16,7 +16,8 @@ interface IProps {
 }
 
 function ListItem({ item }: IProps) {
-  const { fetchList, deleteListItem } = useContext(ListItemsContext);
+  const { fetchList } = useContext(ListItemsDataContext);
+  const { deleteListItem } = useContext(ListItemsApiContext);
   const onRemoveClick = () => deleteListItem(item).then(() => {
     fetchList(item.listId);
   });

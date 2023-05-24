@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { styled } from 'styled-components';
-import { ShopingListsContext } from '../../context/ShopingListsContext';
+import { ShopingListsDataContext, ShopingListsApiContext } from '../../context/ShopingListsContext';
 import ShoppingListRow from '../shoppingListRow/ShoppingListRow';
 import { LinkButton } from '../button/Button';
 import styleVariables from '../../styleVariables';
@@ -12,7 +12,8 @@ const HeaderContainer = styled.div`
 `;
 
 function ShopingLists() {
-  const { items, deleteList } = useContext(ShopingListsContext);
+  const { items } = useContext(ShopingListsDataContext);
+  const { deleteList } = useContext(ShopingListsApiContext);
 
   return (
     <div>

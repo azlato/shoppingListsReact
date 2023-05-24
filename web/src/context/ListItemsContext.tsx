@@ -12,16 +12,22 @@ export interface IListItem {
   name: string;
 }
 
-interface IListItemsContext {
+interface IListItemsDataContext {
   listItems: IListItem[];
   fetchList(id: string): Promise<unknown>;
+}
+
+interface IListItemsApiContext {
   createListItem(data: Partial<IListItem>): Promise<unknown>;
   deleteListItem(item: IListItem): Promise<unknown>;
 }
 
-export const ListItemsContext = createContext<IListItemsContext>({
+export const ListItemsDataContext = createContext<IListItemsDataContext>({
   listItems: [],
   fetchList: () => Promise.resolve(),
+});
+
+export const ListItemsApiContext = createContext<IListItemsApiContext>({
   createListItem: () => Promise.resolve(),
   deleteListItem: () => Promise.resolve(),
 });
@@ -66,16 +72,24 @@ export function ListItemsContextProvider({ children }: { children: React.ReactNo
     return fetchedList;
   }, [setData]);
 
+  const dataValue = useMemo(() => ({
+    listItems: data,
+    fetchList,
+  }), [data, fetchList]);
+
   // Mutations
   const { mutateAsync: createListItem } = useMutation(postListItemHandler);
   const { mutateAsync: deleteListItem } = useMutation(deleteListItemHandler);
-
-  const value = useMemo(() => ({
-    listItems: data,
-    fetchList,
+  const apiValue = useMemo(() => ({
     createListItem,
     deleteListItem,
-  }), [data, fetchList, createListItem, deleteListItem]);
+  }), [createListItem, deleteListItem]);
 
-  return <ListItemsContext.Provider value={value}>{children}</ListItemsContext.Provider>;
+  return (
+    <ListItemsDataContext.Provider value={dataValue}>
+      <ListItemsApiContext.Provider value={apiValue}>
+        {children}
+      </ListItemsApiContext.Provider>
+    </ListItemsDataContext.Provider>
+  );
 }

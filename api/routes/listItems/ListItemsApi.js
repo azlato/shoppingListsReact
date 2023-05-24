@@ -61,6 +61,11 @@ const putListItem = (listId, itemId, data) => {
     throw new Error(`List item id '${itemId}' is not inside list with id '${listId}'`);
   }
 
+  const itemWithName = listItems.find((item) => item.name === data.name);
+  if (itemWithName) {
+    throw new Error(`List item with name '${data.name}' already exists`);
+  }
+
   const updatedItems = listItems.map((item) => {
     if (item.id === itemId) {
       return data;

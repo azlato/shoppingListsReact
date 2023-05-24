@@ -44,8 +44,8 @@ function ListItem({ item }: IProps) {
 
     editListItem({ ...item, name: itemNameField }).then(() => {
       fetchList(item.listId);
+      setIsEditing(false);
     });
-    setIsEditing(false);
   }, [item, itemNameField, editListItem, fetchList]);
 
   return (

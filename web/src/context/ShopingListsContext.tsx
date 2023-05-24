@@ -18,27 +18,27 @@ export const ShopingListsDataContext = createContext<IShopingListsDataContext>({
 });
 
 interface IShopingListsApiContext {
-  createList(data: Partial<IList>): Promise<unknown>;
-  updateList(data: IList): Promise<unknown>;
-  deleteList(id: string): Promise<unknown>;
+  createList(data: Partial<IList>): Promise<Response>;
+  updateList(data: IList): Promise<Response>;
+  deleteList(id: string): Promise<Response>;
 }
 
 export const ShopingListsApiContext = createContext<IShopingListsApiContext>({
-  createList: () => Promise.resolve(),
-  updateList: () => Promise.resolve(),
-  deleteList: () => Promise.resolve(),
+  createList: () => Promise.resolve(new Response()),
+  updateList: () => Promise.resolve(new Response()),
+  deleteList: () => Promise.resolve(new Response()),
 });
 
-const postListHandler = async (data: Partial<IList>): Promise<string> => {
+const postListHandler = async (data: Partial<IList>): Promise<Response> => {
   const response = await apiClient(API_URL, 'POST', data);
   if (!response.ok) {
     const responseText = await response.text();
     throw new Error(`Failed to insert new list ${responseText}`);
   }
-  return response.text();
+  return response;
 };
 
-const putListHandler = async (data: IList): Promise<string> => {
+const putListHandler = async (data: IList): Promise<Response> => {
   const response = await apiClient(`${API_URL}/${data.id}`, 'PUT', data);
   if (!response.ok) {
     const responseText = await response.text();
@@ -46,10 +46,10 @@ const putListHandler = async (data: IList): Promise<string> => {
       `Failed to update list with id '${data.id}'. ${responseText}`,
     );
   }
-  return response.text();
+  return response;
 };
 
-const deleteListHandler = async (id: string): Promise<string> => {
+const deleteListHandler = async (id: string): Promise<Response> => {
   const response = await apiClient(`${API_URL}/${id}`, 'DELETE');
   if (!response.ok) {
     const responseText = await response.text();
@@ -57,7 +57,7 @@ const deleteListHandler = async (id: string): Promise<string> => {
       `Failed to delete list with id '${id}'. ${responseText}`,
     );
   }
-  return response.text();
+  return response;
 };
 
 export function ShopingListsContextProvider({ children }: { children: React.ReactNode }) {

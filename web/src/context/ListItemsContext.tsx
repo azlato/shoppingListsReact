@@ -18,20 +18,20 @@ interface IListItemsDataContext {
 }
 
 interface IListItemsApiContext {
-  createListItem(data: Partial<IListItem>): Promise<unknown>;
-  deleteListItem(item: IListItem): Promise<unknown>;
-  editListItem(item: IListItem): Promise<unknown>;
+  createListItem(data: Partial<IListItem>): Promise<Response>;
+  deleteListItem(item: IListItem): Promise<Response>;
+  editListItem(item: IListItem): Promise<Response>;
 }
 
 export const ListItemsDataContext = createContext<IListItemsDataContext>({
   listItems: [],
-  fetchList: () => Promise.resolve(),
+  fetchList: () => Promise.resolve([]),
 });
 
 export const ListItemsApiContext = createContext<IListItemsApiContext>({
-  createListItem: () => Promise.resolve(),
-  deleteListItem: () => Promise.resolve(),
-  editListItem: () => Promise.resolve(),
+  createListItem: () => Promise.resolve(new Response()),
+  deleteListItem: () => Promise.resolve(new Response()),
+  editListItem: () => Promise.resolve(new Response()),
 });
 
 const getListHandler = async (id: string): Promise<IListItem[]> => {
@@ -45,16 +45,16 @@ const getListHandler = async (id: string): Promise<IListItem[]> => {
   return response.json();
 };
 
-const postListItemHandler = async (data: Partial<IListItem>): Promise<string> => {
+const postListItemHandler = async (data: Partial<IListItem>): Promise<Response> => {
   const response = await apiClient(`${API_URL}/${data.listId}`, 'POST', data);
   if (!response.ok) {
     const responseText = await response.text();
     throw new Error(`Failed to insert new list item ${responseText}`);
   }
-  return response.text();
+  return response;
 };
 
-const deleteListItemHandler = async (item: IListItem): Promise<string> => {
+const deleteListItemHandler = async (item: IListItem): Promise<Response> => {
   const response = await apiClient(`${API_URL}/${item.listId}/${item.id}`, 'DELETE');
   if (!response.ok) {
     const responseText = await response.text();
@@ -62,10 +62,10 @@ const deleteListItemHandler = async (item: IListItem): Promise<string> => {
       `Failed to delete list item with id '${item.id}'. ${responseText}`,
     );
   }
-  return response.text();
+  return response;
 };
 
-const editListItemHandler = async (item: IListItem): Promise<string> => {
+const editListItemHandler = async (item: IListItem): Promise<Response> => {
   const response = await apiClient(`${API_URL}/${item.listId}/${item.id}`, 'PUT', item);
   if (!response.ok) {
     const responseText = await response.text();
@@ -73,7 +73,7 @@ const editListItemHandler = async (item: IListItem): Promise<string> => {
       `Failed to change list item name with id '${item.id}'. ${responseText}`,
     );
   }
-  return response.text();
+  return response;
 };
 
 export function ListItemsContextProvider({ children }: { children: React.ReactNode }) {

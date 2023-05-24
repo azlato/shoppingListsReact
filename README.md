@@ -5,7 +5,7 @@
 # API
 ## Installation
 1. `npm i`
-2. `npm run dev` to start nodemon server
+2. `npm run start` to start server or `npm run dev` to start nodemon dev server
 
 ## Used tehnology
 - [Node.js](https://nodejs.org/dist/latest-v18.x/docs/api/)

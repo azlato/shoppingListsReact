@@ -20,6 +20,7 @@ interface IListItemsDataContext {
 interface IListItemsApiContext {
   createListItem(data: Partial<IListItem>): Promise<unknown>;
   deleteListItem(item: IListItem): Promise<unknown>;
+  editListItem(item: IListItem): Promise<unknown>;
 }
 
 export const ListItemsDataContext = createContext<IListItemsDataContext>({
@@ -30,6 +31,7 @@ export const ListItemsDataContext = createContext<IListItemsDataContext>({
 export const ListItemsApiContext = createContext<IListItemsApiContext>({
   createListItem: () => Promise.resolve(),
   deleteListItem: () => Promise.resolve(),
+  editListItem: () => Promise.resolve(),
 });
 
 const getListHandler = async (id: string): Promise<IListItem[]> => {
@@ -63,6 +65,17 @@ const deleteListItemHandler = async (item: IListItem): Promise<string> => {
   return response.text();
 };
 
+const editListItemHandler = async (item: IListItem): Promise<string> => {
+  const response = await apiClient(`${API_URL}/${item.listId}/${item.id}`, 'PUT', item);
+  if (!response.ok) {
+    const responseText = await response.text();
+    throw new Error(
+      `Failed to change list item name with id '${item.id}'. ${responseText}`,
+    );
+  }
+  return response.text();
+};
+
 export function ListItemsContextProvider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<IListItem[]>([]);
 
@@ -80,10 +93,12 @@ export function ListItemsContextProvider({ children }: { children: React.ReactNo
   // Mutations
   const { mutateAsync: createListItem } = useMutation(postListItemHandler);
   const { mutateAsync: deleteListItem } = useMutation(deleteListItemHandler);
+  const { mutateAsync: editListItem } = useMutation(editListItemHandler);
   const apiValue = useMemo(() => ({
     createListItem,
     deleteListItem,
-  }), [createListItem, deleteListItem]);
+    editListItem,
+  }), [createListItem, deleteListItem, editListItem]);
 
   return (
     <ListItemsDataContext.Provider value={dataValue}>

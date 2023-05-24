@@ -50,9 +50,32 @@ const deleteListItem = (listId, itemId) => {
   return filteredItems;
 };
 
+const putListItem = (listId, itemId, data) => {
+  const listItems = listIdsToItems.get(listId);
+  if (!listItems) {
+    throw new Error(`List with id '${listId}' does not exist`);
+  }
+
+  const foundItem = listItems.find((item) => item.id === itemId);
+  if (!foundItem) {
+    throw new Error(`List item id '${itemId}' is not inside list with id '${listId}'`);
+  }
+
+  const updatedItems = listItems.map((item) => {
+    if (item.id === itemId) {
+      return data;
+    }
+
+    return item;
+  });
+  listIdsToItems.set(listId, updatedItems);
+  return updatedItems;
+};
+
 module.exports = {
   createListItem,
   getListItems,
   deleteListItem,
   deleteAllListItems,
+  putListItem,
 };

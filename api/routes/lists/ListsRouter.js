@@ -71,6 +71,7 @@ router.put('/:id', ctx => {
     try {
         putList(id, data);
         ctx.body = data;
+        ctx.status = 200;
     } catch (error) {
         ctx.status = 400;
         ctx.body = error.message;

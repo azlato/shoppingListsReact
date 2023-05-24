@@ -2,12 +2,14 @@ import { useState, memo } from 'react';
 import { useFormik } from 'formik';
 import { IList } from '../../context/ShopingListsContext';
 import ErrorMessage from '../errorMessage/ErrorMessage';
+import { PureButton } from '../button/Button';
+import Fieldset from '../fieldset/Fieldset';
 
 interface IProps {
   onSubmit(values: Partial<IList>): Promise<unknown>;
 }
 
-function ListItemsForm({onSubmit}: IProps) {
+function ListItemsForm({ onSubmit }: IProps) {
   const [submitError, setSubmitError] = useState<null | string>(null);
   const formik = useFormik({
     initialValues: {
@@ -27,20 +29,22 @@ function ListItemsForm({onSubmit}: IProps) {
     <div>
       {submitError && <ErrorMessage>{submitError}</ErrorMessage>}
       <form onSubmit={formik.handleSubmit}>
-        <label htmlFor="input-name">
-          Název
-          {' '}
-          <input
-            required
-            id="input-name"
-            type="text"
-            name="name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-          />
-        </label>
+        <Fieldset>
+          <label htmlFor="input-name">
+            Název
+            {' '}
+            <input
+              required
+              id="input-name"
+              type="text"
+              name="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+            />
+          </label>
+        </Fieldset>
         <div>
-          <button type="submit">Přidat</button>
+          <PureButton type="submit">Přidat</PureButton>
         </div>
       </form>
     </div>

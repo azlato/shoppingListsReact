@@ -25,10 +25,10 @@ const HeadLink = styled(Link)`
     margin-right: 20px;
 
     color: ${styleVariables.colors.black};
+    text-decoration: none;
 
     &:focus, &:hover {
         color: ${styleVariables.colors.gray400};
-        text-decoration: underline;
     }
 
     @media ${styleVariables.viewport.desktop} {

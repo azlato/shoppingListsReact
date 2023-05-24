@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { IList } from '../../context/ShopingListsContext';
 import ErrorMessage from '../errorMessage/ErrorMessage';
+import { PureButton } from '../button/Button';
+import Fieldset from '../fieldset/Fieldset';
 
 interface IProps {
   isEditMode?: boolean;
@@ -32,24 +34,24 @@ function ShoppingListForm({
     <div>
       {submitError && <ErrorMessage>{submitError}</ErrorMessage>}
       <form onSubmit={formik.handleSubmit}>
-        <label htmlFor="input-name">
-          Název
-          {' '}
-          <input
-            required
-            id="input-name"
-            type="text"
-            name="name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-          />
-        </label>
-        <br />
-        <br />
+        <Fieldset>
+          <label htmlFor="input-name">
+            Název
+            {' '}
+            <input
+              required
+              id="input-name"
+              type="text"
+              name="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+            />
+          </label>
+        </Fieldset>
         <div>
-          <button type="submit">{isEditMode ? 'Upravit' : 'Vytvořit'}</button>
+          <PureButton type="submit">{isEditMode ? 'Upravit' : 'Vytvořit'}</PureButton>
           {isEditMode && onRemove
-            && <button type="button" onClick={onRemove}>Smazat</button>}
+            && <PureButton type="button" onClick={onRemove}>Smazat</PureButton>}
         </div>
       </form>
     </div>

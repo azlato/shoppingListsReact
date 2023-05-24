@@ -1,23 +1,27 @@
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { styled } from 'styled-components';
 import { ShopingListsContext } from '../../context/ShopingListsContext';
+import ShoppingListRow from '../shoppingListRow/ShoppingListRow';
+import { LinkButton } from '../button/Button';
+import styleVariables from '../../styleVariables';
+
+const HeaderContainer = styled.div`
+  margin-bottom: 24px;
+  border-bottom: 1px solid ${styleVariables.colors.gray300};
+  padding-bottom: 24px;
+`;
 
 function ShopingLists() {
-  const { items } = useContext(ShopingListsContext);
+  const { items, deleteList } = useContext(ShopingListsContext);
 
   return (
     <div>
-      <h2>Nákupní seznamy</h2>
-      <Link to="/lists/create">Vytvořit nový seznam</Link>
-      <hr />
+      <HeaderContainer>
+        <h2>Nákupní seznamy</h2>
+        <LinkButton to="/lists/create">Vytvořit nový seznam</LinkButton>
+      </HeaderContainer>
       {items.map((item) => (
-        <div key={item.id}>
-          <Link to={`/lists/${item.id}`}>
-            {item.name}
-          </Link>
-          {' '}
-          <Link to={`/lists/edit/${item.id}`}>Editovat</Link>
-        </div>
+        <ShoppingListRow key={item.id} item={item} deleteList={deleteList} />
       ))}
     </div>
   );

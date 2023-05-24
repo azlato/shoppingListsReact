@@ -11,6 +11,10 @@
 - [Node.js](https://nodejs.org/dist/latest-v18.x/docs/api/)
 - [Koa.js](https://koajs.com/)
 - [Nodemon](https://nodemon.io/)
+- [Jest](https://jestjs.io/)
+
+## Scripts
+- You can run unit tests by `npm run test`
 
 # Web
 - Written with React functional components and context to separate fetch logic

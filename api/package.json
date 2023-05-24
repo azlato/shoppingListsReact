@@ -16,7 +16,10 @@
     "node": ">=18.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "eslint": "^8.41.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.8"
   },
   "dependencies": {
     "@koa/cors": "^4.0.0",

@@ -10,12 +10,11 @@ app.use(bodyParser());
 app.use(cors());
 
 app.use(ListRouter.routes())
-    .use(ListRouter.allowedMethods());
+  .use(ListRouter.allowedMethods());
 
 app.use(ListItemsRouter.routes())
-    .use(ListItemsRouter.allowedMethods());
+  .use(ListItemsRouter.allowedMethods());
 
 app.listen(3000);
 
-console.log("API server running on http://localhost:3000");
-
+console.log('API server running on http://localhost:3000');

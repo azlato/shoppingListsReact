@@ -11,7 +11,6 @@ module.exports = {
   },
   plugins: ['react-refresh'],
   rules: {
-    'react-refresh/only-export-components': 'warn',
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'react/prop-types': [0],
     'react/require-default-props': [0],

@@ -3,6 +3,7 @@ module.exports = {
   extends: [
     'airbnb',
   ],
+  pluging: ['jest'],
   parserOptions: {
     ecmaVersion: 'latest', sourceType: 'module',
   },

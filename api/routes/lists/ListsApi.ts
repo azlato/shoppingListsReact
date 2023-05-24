@@ -1,9 +1,9 @@
-const uuid = require('uuid');
-const { deleteAllListItems } = require('../listItems/ListItemsApi');
+import {v4 as uuid} from 'uuid';
+import { deleteAllListItems } from '../listItems/ListItemsApi';
 
 const lists = new Map();
 
-const createList = (values) => {
+export const createList = (values) => {
   const listWithName = [...lists.values()].find((item) => item.name === values.name);
   if (listWithName) {
     throw new Error(`List with name '${values.name}' already exists`);
@@ -18,11 +18,11 @@ const createList = (values) => {
   return list;
 };
 
-const getLists = () => [...lists.values()];
+export const getLists = () => [...lists.values()];
 
-const getList = (id) => lists.get(id);
+export const getList = (id: string) => lists.get(id);
 
-const putList = (id, values) => {
+export const putList = (id: string, values) => {
   const list = getList(id);
   if (!list) {
     throw new Error('List does not exist');
@@ -38,7 +38,7 @@ const putList = (id, values) => {
   return values;
 };
 
-const deleteList = (id) => {
+export const deleteList = (id: string) => {
   const list = getList(id);
   if (!list) {
     throw new Error(`List with id '${id}' does not exist`);
@@ -48,12 +48,4 @@ const deleteList = (id) => {
   deleteAllListItems(id);
 
   lists.delete(id);
-};
-
-module.exports = {
-  createList,
-  getLists,
-  getList,
-  putList,
-  deleteList,
 };

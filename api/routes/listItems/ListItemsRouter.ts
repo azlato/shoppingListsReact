@@ -1,7 +1,7 @@
-const Router = require('@koa/router');
-const {
+import Router from '@koa/router';
+import {
   createListItem, getListItems, deleteListItem, putListItem,
-} = require('./ListItemsApi');
+} from './ListItemsApi';
 
 const router = new Router({
   prefix: '/listItems',
@@ -9,7 +9,7 @@ const router = new Router({
 
 router.post('/:listId', (ctx) => {
   const { listId } = ctx.params;
-  const data = ctx.request.body;
+  const data = ctx.body as {[key: string]: string};
 
   if (!data.name) {
     ctx.response.status = 400;
@@ -55,7 +55,7 @@ router.put('/:listId/:itemId', (ctx) => {
     ctx.body = 'Id is not defined';
   }
 
-  const data = ctx.request.body;
+  const data = ctx.body as {[key: string]: string};;
   if (!data.name || !data.id || !data.listId) {
     ctx.response.status = 400;
     ctx.body = 'You should send item name, id and listId at body';
@@ -70,4 +70,4 @@ router.put('/:listId/:itemId', (ctx) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,8 +1,8 @@
-const uuid = require('uuid');
+import {v4 as uuid} from 'uuid';
 
 const listIdsToItems = new Map();
 
-const createListItem = (listId, values) => {
+export const createListItem = (listId, values) => {
   const listItems = listIdsToItems.get(listId) || [];
 
   const itemWithName = listItems.find((item) => item.name === values.name);
@@ -11,7 +11,7 @@ const createListItem = (listId, values) => {
   }
 
   const item = {
-    id: uuid.v4(),
+    id: uuid(),
     listId,
     name: values.name,
   };
@@ -20,12 +20,12 @@ const createListItem = (listId, values) => {
   return item;
 };
 
-const getListItems = (listId) => {
+export const getListItems = (listId) => {
   const listItems = listIdsToItems.get(listId) || [];
   return listItems;
 };
 
-const deleteAllListItems = (listId) => {
+export const deleteAllListItems = (listId) => {
   const hasList = listIdsToItems.has(listId);
   if (hasList) {
     listIdsToItems.delete(listId);
@@ -34,7 +34,7 @@ const deleteAllListItems = (listId) => {
   return listIdsToItems;
 };
 
-const deleteListItem = (listId, itemId) => {
+export const deleteListItem = (listId, itemId) => {
   const listItems = listIdsToItems.get(listId);
   if (!listItems) {
     throw new Error(`List with id '${listId}' does not exist`);
@@ -50,7 +50,7 @@ const deleteListItem = (listId, itemId) => {
   return filteredItems;
 };
 
-const putListItem = (listId, itemId, data) => {
+export const putListItem = (listId, itemId, data) => {
   const listItems = listIdsToItems.get(listId);
   if (!listItems) {
     throw new Error(`List with id '${listId}' does not exist`);
@@ -75,12 +75,4 @@ const putListItem = (listId, itemId, data) => {
   });
   listIdsToItems.set(listId, updatedItems);
   return updatedItems;
-};
-
-module.exports = {
-  createListItem,
-  getListItems,
-  deleteListItem,
-  deleteAllListItems,
-  putListItem,
 };

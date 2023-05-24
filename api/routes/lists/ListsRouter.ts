@@ -1,7 +1,5 @@
-const Router = require('@koa/router');
-const {
-  createList, getLists, getList, putList, deleteList,
-} = require('./ListsApi');
+import Router from '@koa/router';
+import { createList, getLists, getList, putList, deleteList } from './ListsApi';
 
 const router = new Router({
   prefix: '/lists',
@@ -12,7 +10,7 @@ router.get('/', (ctx) => {
 });
 
 router.post('/', (ctx) => {
-  const data = ctx.request.body;
+  const data = ctx.body as {[key: string]: string};
 
   if (!data.name) {
     ctx.response.status = 400;
@@ -58,7 +56,7 @@ router.delete('/:id', (ctx) => {
 
 router.put('/:id', (ctx) => {
   const { id } = ctx.params;
-  const data = ctx.request.body;
+  const data = ctx.body  as {[key: string]: string};
   if (data.name || data.id) {
     ctx.response.status = 400;
     ctx.body = 'You should send list name and id at body';
@@ -80,4 +78,4 @@ router.put('/:id', (ctx) => {
   }
 });
 
-module.exports = router;
+export default router;

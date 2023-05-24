@@ -2,7 +2,7 @@
 - Mono repo project with API and web project
 - Fetch, display and manage lists and list items
 
-# API
+# 💾 REST API
 ## Installation
 1. `npm i`
 2. `npm run start` to start server or `npm run dev` to start nodemon dev server
@@ -16,7 +16,7 @@
 ## Scripts
 - You can run unit tests by `npm run test`
 
-# Web
+# 🌐 Web
 - Written with React functional components and context to separate fetch logic
 
 ## Installation

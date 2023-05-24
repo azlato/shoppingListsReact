@@ -1,4 +1,5 @@
 const uuid = require('uuid');
+const { deleteAllListItems } = require('../listItems/ListItemsApi');
 
 const lists = new Map();
 
@@ -46,6 +47,9 @@ const deleteList = (id) => {
     if (!list) {
         throw new Error(`List with id '${id}' does not exist`);
     };
+
+    // cleanup items
+    deleteAllListItems(id);
 
     lists.delete(id);
 };

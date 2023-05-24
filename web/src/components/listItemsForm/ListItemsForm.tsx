@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { IList } from '../../context/ShopingListsContext';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -51,4 +51,4 @@ function ListItemsForm({ onSubmit }: IProps) {
   );
 }
 
-export default memo(ListItemsForm);
+export default React.memo(ListItemsForm);

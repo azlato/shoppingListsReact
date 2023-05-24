@@ -18,11 +18,21 @@ const createListItem = (listId, values) => {
     listItems.push(item);
     listIdsToItems.set(listId, listItems);
     return item;
-}
+};
 
 const getListItems = (listId) => {
     const listItems = listIdsToItems.get(listId) || [];
     return listItems;
+};
+
+
+const deleteAllListItems = (listId) => {
+    const hasList = listIdsToItems.has(listId);
+    if (hasList) {
+        listIdsToItems.delete(listId);
+    }
+
+    return listIdsToItems;
 };
 
 const deleteListItem = (listId, itemId) => {
@@ -39,10 +49,11 @@ const deleteListItem = (listId, itemId) => {
     const filteredItems = listItems.filter(item => item.id !== itemId);
     listIdsToItems.set(listId, filteredItems);
     return filteredItems;
-}
+};
 
 module.exports = {
     createListItem,
     getListItems,
     deleteListItem,
+    deleteAllListItems,
 };

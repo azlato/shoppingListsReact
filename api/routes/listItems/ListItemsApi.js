@@ -12,6 +12,7 @@ const createListItem = (listId, values) => {
 
     const item = {
         id: uuid.v4(),
+        listId: listId,
         name: values.name,
     };
     listItems.push(item);
@@ -30,16 +31,18 @@ const deleteListItem = (listId, itemId) => {
         throw new Error(`List with id '${listId}' does not exist`);
     }
 
-    const foundItem = listItems.find(item => item.id !== itemId);
+    const foundItem = listItems.find(item => item.id === itemId);
     if (!foundItem) {
         throw new Error(`List item id '${itemId}' is not inside list with id '${listId}'`);
     }
 
     const filteredItems = listItems.filter(item => item.id !== itemId);
+    listIdsToItems.set(listId, filteredItems);
     return filteredItems;
 }
 
 module.exports = {
     createListItem,
     getListItems,
+    deleteListItem,
 };

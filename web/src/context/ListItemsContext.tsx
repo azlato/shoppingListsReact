@@ -16,7 +16,7 @@ interface IListItemsContext {
   listItems: IListItem[];
   fetchList(id: string): Promise<unknown>;
   createListItem(data: Partial<IListItem>): Promise<unknown>;
-  deleteListItem(data: { listId: string, itemId: string }): Promise<unknown>;
+  deleteListItem(item: IListItem): Promise<unknown>;
 }
 
 export const ListItemsContext = createContext<IListItemsContext>({
@@ -46,12 +46,12 @@ const postListItemHandler = async (data: Partial<IListItem>): Promise<string> =>
   return response.text();
 };
 
-const deleteListItemHandler = async ({ listId, itemId }: { listId: string, itemId: string }): Promise<string> => {
-  const response = await apiClient(`${API_URL}/${listId}/${itemId}`, 'DELETE');
+const deleteListItemHandler = async (item: IListItem): Promise<string> => {
+  const response = await apiClient(`${API_URL}/${item.listId}/${item.id}`, 'DELETE');
   if (!response.ok) {
     const responseText = await response.text();
     throw new Error(
-      `Failed to delete list item with id '${itemId}'. ${responseText}`,
+      `Failed to delete list item with id '${item.id}'. ${responseText}`,
     );
   }
   return response.text();
@@ -67,14 +67,8 @@ export function ListItemsContextProvider({ children }: { children: React.ReactNo
   }, [setData]);
 
   // Mutations
-  const onSuccess = () => {
-  };
-  const { mutateAsync: createListItem } = useMutation(postListItemHandler, {
-    onSuccess,
-  });
-  const { mutateAsync: deleteListItem } = useMutation(deleteListItemHandler, {
-    onSuccess,
-  });
+  const { mutateAsync: createListItem } = useMutation(postListItemHandler);
+  const { mutateAsync: deleteListItem } = useMutation(deleteListItemHandler);
 
   const value = useMemo(() => ({
     listItems: data,

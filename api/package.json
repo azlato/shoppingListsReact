@@ -26,9 +26,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "prettier": "^2.8.8",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4",
-    "vite": "^4.3.8",
-    "vite-plugin-node": "^3.0.2"
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@koa/cors": "^4.0.0",

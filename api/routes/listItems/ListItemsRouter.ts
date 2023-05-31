@@ -1,6 +1,6 @@
 import Router from '@koa/router';
 import {
-  createListItem, getListItems, deleteListItem, putListItem,
+  createListItem, getListItems, deleteListItem, putListItem, IListItem
 } from './ListItemsApi';
 
 const router = new Router({
@@ -9,7 +9,7 @@ const router = new Router({
 
 router.post('/:listId', (ctx) => {
   const { listId } = ctx.params;
-  const data = ctx.body as {[key: string]: string};
+  const data = ctx.body as Omit<IListItem, "id">;
 
   if (!data.name) {
     ctx.response.status = 400;
@@ -22,7 +22,7 @@ router.post('/:listId', (ctx) => {
     ctx.body = newListItem;
   } catch (error) {
     ctx.response.status = 409;
-    ctx.body = error.message;
+    ctx.body = (error as Error).message;
   }
 });
 
@@ -44,7 +44,7 @@ router.delete('/:listId/:itemId', (ctx) => {
     ctx.status = 200;
   } catch (error) {
     ctx.status = 400;
-    ctx.body = error.message;
+    ctx.body = (error as Error).message;
   }
 });
 
@@ -55,7 +55,7 @@ router.put('/:listId/:itemId', (ctx) => {
     ctx.body = 'Id is not defined';
   }
 
-  const data = ctx.body as {[key: string]: string};;
+  const data = ctx.body as IListItem;
   if (!data.name || !data.id || !data.listId) {
     ctx.response.status = 400;
     ctx.body = 'You should send item name, id and listId at body';
@@ -66,7 +66,7 @@ router.put('/:listId/:itemId', (ctx) => {
     ctx.status = 200;
   } catch (error) {
     ctx.status = 400;
-    ctx.body = error.message;
+    ctx.body = (error as Error).message;
   }
 });
 

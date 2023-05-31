@@ -1,11 +1,17 @@
 import {v4 as uuid} from 'uuid';
 
-const listIdsToItems = new Map();
+const listIdsToItems = new Map<string, IListItem[]>();
 
-export const createListItem = (listId, values) => {
+export interface IListItem {
+  name: string;
+  listId: string;
+  id: string;
+}
+
+export const createListItem = (listId: string, values: {name: string, listId: string}) => {
   const listItems = listIdsToItems.get(listId) || [];
 
-  const itemWithName = listItems.find((item) => item.name === values.name);
+  const itemWithName = listItems.find((item: IListItem) => item.name === values.name);
   if (itemWithName) {
     throw new Error(`List item with name '${values.name}' already exists`);
   }
@@ -20,12 +26,12 @@ export const createListItem = (listId, values) => {
   return item;
 };
 
-export const getListItems = (listId) => {
+export const getListItems = (listId: string) => {
   const listItems = listIdsToItems.get(listId) || [];
   return listItems;
 };
 
-export const deleteAllListItems = (listId) => {
+export const deleteAllListItems = (listId: string) => {
   const hasList = listIdsToItems.has(listId);
   if (hasList) {
     listIdsToItems.delete(listId);
@@ -34,7 +40,7 @@ export const deleteAllListItems = (listId) => {
   return listIdsToItems;
 };
 
-export const deleteListItem = (listId, itemId) => {
+export const deleteListItem = (listId: string, itemId: string) => {
   const listItems = listIdsToItems.get(listId);
   if (!listItems) {
     throw new Error(`List with id '${listId}' does not exist`);
@@ -50,23 +56,23 @@ export const deleteListItem = (listId, itemId) => {
   return filteredItems;
 };
 
-export const putListItem = (listId, itemId, data) => {
+export const putListItem = (listId: string, itemId: string, data: {id: string; listId: string; name: string}) => {
   const listItems = listIdsToItems.get(listId);
   if (!listItems) {
     throw new Error(`List with id '${listId}' does not exist`);
   }
 
-  const foundItem = listItems.find((item) => item.id === itemId);
+  const foundItem = listItems.find((item: IListItem) => item.id === itemId);
   if (!foundItem) {
     throw new Error(`List item id '${itemId}' is not inside list with id '${listId}'`);
   }
 
-  const itemWithName = listItems.find((item) => item.name === data.name);
+  const itemWithName = listItems.find((item: IListItem) => item.name === data.name);
   if (itemWithName) {
     throw new Error(`List item with name '${data.name}' already exists`);
   }
 
-  const updatedItems = listItems.map((item) => {
+  const updatedItems = listItems.map((item: IListItem) => {
     if (item.id === itemId) {
       return data;
     }

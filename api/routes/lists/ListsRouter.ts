@@ -1,5 +1,5 @@
 import Router from '@koa/router';
-import { createList, getLists, getList, putList, deleteList } from './ListsApi';
+import { createList, getLists, getList, putList, deleteList, IList } from './ListsApi';
 
 const router = new Router({
   prefix: '/lists',
@@ -10,7 +10,7 @@ router.get('/', (ctx) => {
 });
 
 router.post('/', (ctx) => {
-  const data = ctx.body as {[key: string]: string};
+  const data = ctx.body as Omit<IList, "id">;
 
   if (!data.name) {
     ctx.response.status = 400;
@@ -23,7 +23,7 @@ router.post('/', (ctx) => {
     ctx.body = newList;
   } catch (error) {
     ctx.response.status = 409;
-    ctx.body = error.message;
+    ctx.body = (error as Error).message;
   }
 });
 
@@ -50,13 +50,13 @@ router.delete('/:id', (ctx) => {
     ctx.status = 200;
   } catch (error) {
     ctx.status = 400;
-    ctx.body = error.message;
+    ctx.body = (error as Error).message;
   }
 });
 
 router.put('/:id', (ctx) => {
   const { id } = ctx.params;
-  const data = ctx.body  as {[key: string]: string};
+  const data = ctx.body as IList;
   if (data.name || data.id) {
     ctx.response.status = 400;
     ctx.body = 'You should send list name and id at body';
@@ -74,7 +74,7 @@ router.put('/:id', (ctx) => {
     ctx.status = 200;
   } catch (error) {
     ctx.status = 400;
-    ctx.body = error.message;
+    ctx.body = (error as Error).message;
   }
 });
 
